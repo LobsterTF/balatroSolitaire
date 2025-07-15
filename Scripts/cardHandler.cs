@@ -21,8 +21,17 @@ public class cardHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private int assignedRow;
     [SerializeField] private Image cardImageRaycast;
     private int chainLevel;
-    private bool hasWon;
+    private bool hasWon, isMobile = false;
 
+    private soundHandler soundHandlerScript;
+
+    void Start()
+    {
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            isMobile = true;
+        }
+    }
     public void spawn(cardData cardVals, int row, Transform spawnPos, bool face)
     {
         cardInfo = cardVals;
@@ -32,6 +41,10 @@ public class cardHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         selectedParent = GameObject.FindWithTag("selectedHolder");
         visualHandler = GameObject.FindWithTag("visualHandler");
         cardSpritesScript = visualHandler.GetComponent<cardSprites>(); // get manager script
+
+        GameObject soundHandlerObj = GameObject.FindWithTag("soundPlayer");
+        soundHandlerScript = soundHandlerObj.GetComponent<soundHandler>(); // get manager script
+
 
         spawnVisual(spawnPos);
     }
@@ -192,6 +205,11 @@ public class cardHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (canShake && !Input.GetButton("Fire1") && faceUp && !covered)
         {
             cardAnimHandlerScript.callHover();
+            if (!isMobile)
+            {
+                soundHandlerScript.callSound(3);
+            }
+            
             canShake = false;
         }
 

@@ -60,8 +60,7 @@ public class solitaireHandler : MonoBehaviour
             
             getSelectedCard();
             holdingCard = true;
-            
-            
+
         }
 
 
@@ -395,6 +394,12 @@ public class solitaireHandler : MonoBehaviour
         cardHandler cardHandlerScript = currentHeldCardObj.GetComponent<cardHandler>(); // issue for waste. currentHeldCardObj is null
 
         cardData cardInfo = cardHandlerScript.getCardData();
+
+        if (cardHandlerScript.checkFaceUp())
+        {
+            soundHandlerScript.callSound(2);
+
+        }
 
         //cardHandlerScript.flipCard();
         heldCardValue = cardToInt(cardInfo);
